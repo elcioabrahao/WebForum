@@ -115,7 +115,7 @@ public class MensagemDao {
 
         String sql = "SELECT * FROM forum_mensagem WHERE id > ? ORDER BY id ASC ";
         PreparedStatement ps = conn.prepareStatement(sql);
-        ps.setInt(1,id);
+        ps.setInt(1, id);
         List searchResults = listQuery(conn, ps);
 
         return searchResults;
@@ -141,12 +141,14 @@ public class MensagemDao {
           ResultSet result = null;
 
           try {
-               sql = "INSERT INTO forum_mensagem ( id_cliente, data, mensagem) VALUES (?, ?, ?) ";
+               sql = "INSERT INTO forum_mensagem ( id_cliente, nome_cliente, data, "
+               + "mensagem) VALUES (?, ?, ?, ?) ";
                stmt = conn.prepareStatement(sql);
 
                stmt.setInt(1, valueObject.getIdCliente()); 
-               stmt.setString(2, valueObject.getData()); 
-               stmt.setString(3, valueObject.getMensagem()); 
+               stmt.setString(2, valueObject.getNomeCliente()); 
+               stmt.setString(3, valueObject.getData()); 
+               stmt.setString(4, valueObject.getMensagem()); 
 
                int rowcount = databaseUpdate(conn, stmt);
                if (rowcount != 1) {
@@ -203,16 +205,18 @@ public class MensagemDao {
     public void save(Connection conn, Mensagem valueObject) 
           throws NotFoundException, SQLException {
 
-          String sql = "UPDATE forum_mensagem SET id_cliente = ?, data = ?, mensagem = ? WHERE (id = ? ) ";
+          String sql = "UPDATE forum_mensagem SET id_cliente = ?, nome_cliente = ?, data = ?, "
+               + "mensagem = ? WHERE (id = ? ) ";
           PreparedStatement stmt = null;
 
           try {
               stmt = conn.prepareStatement(sql);
               stmt.setInt(1, valueObject.getIdCliente()); 
-              stmt.setString(2, valueObject.getData()); 
-              stmt.setString(3, valueObject.getMensagem()); 
+              stmt.setString(2, valueObject.getNomeCliente()); 
+              stmt.setString(3, valueObject.getData()); 
+              stmt.setString(4, valueObject.getMensagem()); 
 
-              stmt.setInt(4, valueObject.getId()); 
+              stmt.setInt(5, valueObject.getId()); 
 
               int rowcount = databaseUpdate(conn, stmt);
               if (rowcount == 0) {
@@ -355,6 +359,11 @@ public class MensagemDao {
               sql.append("AND id_cliente = ").append(valueObject.getIdCliente()).append(" ");
           }
 
+          if (valueObject.getNomeCliente() != null) {
+              if (first) { first = false; }
+              sql.append("AND nome_cliente LIKE '").append(valueObject.getNomeCliente()).append("%' ");
+          }
+
           if (valueObject.getData() != null) {
               if (first) { first = false; }
               sql.append("AND data LIKE '").append(valueObject.getData()).append("%' ");
@@ -427,6 +436,7 @@ public class MensagemDao {
 
                    valueObject.setId(result.getInt("id")); 
                    valueObject.setIdCliente(result.getInt("id_cliente")); 
+                   valueObject.setNomeCliente(result.getString("nome_cliente")); 
                    valueObject.setData(result.getString("data")); 
                    valueObject.setMensagem(result.getString("mensagem")); 
 
@@ -464,6 +474,7 @@ public class MensagemDao {
 
                    temp.setId(result.getInt("id")); 
                    temp.setIdCliente(result.getInt("id_cliente")); 
+                   temp.setNomeCliente(result.getString("nome_cliente")); 
                    temp.setData(result.getString("data")); 
                    temp.setMensagem(result.getString("mensagem")); 
 

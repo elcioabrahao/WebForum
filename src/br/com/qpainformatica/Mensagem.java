@@ -40,6 +40,7 @@ public class Mensagem implements Cloneable, Serializable {
      */
     private int id;
     private int idCliente;
+    private String nomeCliente;
     private String data;
     private String mensagem;
 
@@ -83,6 +84,13 @@ public class Mensagem implements Cloneable, Serializable {
           this.idCliente = idClienteIn;
     }
 
+    public String getNomeCliente() {
+          return this.nomeCliente;
+    }
+    public void setNomeCliente(String nomeClienteIn) {
+          this.nomeCliente = nomeClienteIn;
+    }
+
     public String getData() {
           return this.data;
     }
@@ -109,10 +117,12 @@ public class Mensagem implements Cloneable, Serializable {
 
     public void setAll(int idIn,
           int idClienteIn,
+          String nomeClienteIn,
           String dataIn,
           String mensagemIn) {
           this.id = idIn;
           this.idCliente = idClienteIn;
+          this.nomeCliente = nomeClienteIn;
           this.data = dataIn;
           this.mensagem = mensagemIn;
     }
@@ -131,6 +141,12 @@ public class Mensagem implements Cloneable, Serializable {
                     return(false);
           }
           if (valueObject.getIdCliente() != this.idCliente) {
+                    return(false);
+          }
+          if (this.nomeCliente == null) {
+                    if (valueObject.getNomeCliente() != null)
+                           return(false);
+          } else if (!this.nomeCliente.equals(valueObject.getNomeCliente())) {
                     return(false);
           }
           if (this.data == null) {
@@ -162,6 +178,7 @@ public class Mensagem implements Cloneable, Serializable {
         out.append("Persistent attributes: \n"); 
         out.append("id = " + this.id + "\n"); 
         out.append("idCliente = " + this.idCliente + "\n"); 
+        out.append("nomeCliente = " + this.nomeCliente + "\n"); 
         out.append("data = " + this.data + "\n"); 
         out.append("mensagem = " + this.mensagem + "\n"); 
         return out.toString();
@@ -179,6 +196,8 @@ public class Mensagem implements Cloneable, Serializable {
 
         cloned.setId(this.id); 
         cloned.setIdCliente(this.idCliente); 
+        if (this.nomeCliente != null)
+             cloned.setNomeCliente(new String(this.nomeCliente)); 
         if (this.data != null)
              cloned.setData(new String(this.data)); 
         if (this.mensagem != null)

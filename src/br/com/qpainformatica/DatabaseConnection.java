@@ -18,8 +18,10 @@ public class DatabaseConnection {
 		}
 	 
 		try {
-			conn = DriverManager
-			.getConnection("jdbc:mysql://localhost:3306/webforum","forum", "forum123");
+			// local
+			conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/webforum","forum", "forum123");
+			// Integrator
+			//conn = DriverManager.getConnection("jdbc:mysql://localhost/webforum","forum", "forum123");
 	 
 		} catch (SQLException e) {
 			e.printStackTrace();
